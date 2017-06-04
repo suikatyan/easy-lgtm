@@ -6,7 +6,7 @@ class ImageService {
    * @param {array} app
    */
   constructor(app) {
-    this.PRELOAD_IMAGES_MAX = 16;
+    this.PRELOAD_IMAGES_MAX = 6;
 
     this.app = app;
   }

@@ -66,7 +66,7 @@ class LgtmImage {
    * 画像がクリックされたとき、テキストエリアに画像URL（マークダウン形式）を挿入する。
    */
   input_() {
-    let text = `\n\n![LGTM](${this.data.lgtmUrl})`;
+    let text = `\n\n![LGTM](${this.data.imageUrl})`;
     $("#new_comment_field").val($('#new_comment_field').val() + text);
   }
 }
