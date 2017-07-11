@@ -13,6 +13,7 @@ class Frontend {
 
     this.urlPatterns = {
       "partial-pull-merging": /pull\/\d+(?:$|#)/,
+      "submit-review": /pull\/\d+\/files(?:$|#)/,
     };
   }
 
@@ -85,6 +86,15 @@ class Frontend {
           methodType: this.app.templater.METHOD_TYPE_AFTER,
           template: "lgtmButton",
           inputTarget: "#new_comment_field",
+        });
+        break;
+
+      case "submit-review":
+        this.lgtmButton = new LgtmButton(this.app, {
+          target: "#" + target + " .write-content",
+          methodType: this.app.templater.METHOD_TYPE_AFTER,
+          template: "lgtmButtonSubmit",
+          inputTarget: "#pull_request_review_body",
         });
         break;
     }
