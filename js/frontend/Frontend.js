@@ -9,7 +9,11 @@ class Frontend {
     this.app = app;
 
     this.observer = null;
-    this.flag = true;
+    this.lgtmButton = null;
+
+    this.urlPatterns = {
+      "partial-pull-merging": /pull\/\d+(?:$|#)/,
+    };
   }
 
   /**
@@ -18,8 +22,7 @@ class Frontend {
   initialize() {
     this.startObservation();
 
-    let lgtmButton = new LgtmButton(this.app);
-    lgtmButton.create();
+    this.createLgtmButton(this.getTarget());
   }
 
   /**
@@ -34,22 +37,58 @@ class Frontend {
     }
 
     this.observer = new MutationObserver((changedNodes) => {
-      // たぶん以下にある条件で動くはず
-      if (!window.location.href.match(/pull\/\d+(?:$|#)/)) {
-        this.flag = true;
-        return;
-      }
+      let target = this.getTarget();
 
-      if (!this.flag) {
-        return;
-      }
-
-      if ($("#partial-pull-merging").length) {
-        this.flag = false;
-        this.initialize();
+      if (target != null && $("#" + target).length) {
+        this.createLgtmButton(target);
       }
     });
 
     this.observer.observe($("#js-pjax-loader-bar")[0], {attributes: true});
+  }
+
+  /**
+   * URL から対象を取得する。
+   * 対象でない URL の場合は null を返す。
+   * @return {string|null}
+   */
+  getTarget() {
+    let target = null;
+
+    $.each(this.urlPatterns, function (key, pattern) {
+      if (window.location.href.match(pattern)) {
+        target = key;
+      }
+    });
+
+    return target;
+  }
+
+  /**
+   * LGTM ボタンを作成する。
+   * 対象が無い場合はスキップする。
+   * @param  {string|null} target
+   */
+  createLgtmButton(target) {
+    if (target == null) {
+      return;
+    }
+
+    if (this.lgtmButton != null) {
+      this.lgtmButton.destroy();
+    }
+
+    switch (target) {
+      case "partial-pull-merging":
+        this.lgtmButton = new LgtmButton(this.app, {
+          target: "#" + target,
+          methodType: this.app.templater.METHOD_TYPE_AFTER,
+          template: "lgtmButton",
+          inputTarget: "#new_comment_field",
+        });
+        break;
+    }
+
+    this.lgtmButton.create();
   }
 }
