@@ -56,7 +56,7 @@ class Frontend {
   getTarget() {
     let target = null;
 
-    $.each(this.urlPatterns, function (key, pattern) {
+    $.each(this.urlPatterns, (key, pattern) => {
       if (window.location.href.match(pattern)) {
         target = key;
       }
