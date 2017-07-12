@@ -36,7 +36,7 @@ class LgtmButton {
    * ボタンを削除する。
    */
   destroy() {
-    $(this.vue.$el).remove();
+    $(`#${this.vue.$el.id}`).remove();
   }
 
   /**
