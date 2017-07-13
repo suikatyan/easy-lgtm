@@ -51,6 +51,7 @@ class LgtmButton {
       },
       methods: {
         onClick: () => {
+          $("#lgtm_button_close").show(80);
           if (this.isLoading) {
             return;
           }
@@ -68,7 +69,12 @@ class LgtmButton {
         },
         onMouseleave: (event) => {
           $(event.target).find(".lgtm_not_initial").animate({"opacity": 1}, 100);
-        }
+        },
+        onClickCloseButton: (event) => {
+          // 消したいがためにインスタンスを作成します。ごめんなさい
+          (new LgtmImage()).clearBrothers();
+          $(event.target).hide(80);
+        },
       }
     }
   }

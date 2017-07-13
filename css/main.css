@@ -76,6 +76,20 @@
   width: 100%;
 }
 
+#lgtm_button_close {
+  background-color: white;
+  color: white;
+  border: tomato 1px solid;
+  height: 25px;
+  width: 100%;
+  display: none;
+  transition: background-color 0.1s linear;
+}
+
+#lgtm_button_close:hover {
+  background-color: tomato;
+}
+
 .lgtm_image {
   width: 330px;
   padding: 2px;
