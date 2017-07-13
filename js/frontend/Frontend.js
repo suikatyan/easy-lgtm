@@ -23,7 +23,7 @@ class Frontend {
   initialize() {
     this.startObservation();
 
-    this.createLgtmButton(this.getTarget());
+    this._createLgtmButton(this._getTarget());
   }
 
   /**
@@ -38,10 +38,10 @@ class Frontend {
     }
 
     this.observer = new MutationObserver((changedNodes) => {
-      let target = this.getTarget();
+      let target = this._getTarget();
 
       if (target != null) {
-        this.createLgtmButton(target);
+        this._createLgtmButton(target);
       }
     });
 
@@ -53,7 +53,7 @@ class Frontend {
    * 対象でない URL の場合は null を返す。
    * @return {string|null}
    */
-  getTarget() {
+  _getTarget() {
     let target = null;
 
     this.urlPatterns.forEach((pattern, key) => {
@@ -70,7 +70,7 @@ class Frontend {
    * 対象が無い場合はスキップする。
    * @param  {string|null} target
    */
-  createLgtmButton(target) {
+  _createLgtmButton(target) {
     if (target == null || $("#" + target).length == 0) {
       return;
     }
