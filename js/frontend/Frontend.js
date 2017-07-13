@@ -9,12 +9,12 @@ class Frontend {
     this.app = app;
 
     this.observer = null;
-    this.lgtmButton = null;
+    this.lgtmButtons = new Map();
 
-    this.urlPatterns = {
-      "partial-pull-merging": /pull\/\d+(?:$|#)/,
-      "submit-review": /pull\/\d+\/files(?:$|#)/,
-    };
+    this.urlPatterns = new Map([
+      ["partial-pull-merging", /pull\/\d+(?:$|#)/],
+      ["submit-review", /pull\/\d+\/files(?:$|#)/],
+    ]);
   }
 
   /**
@@ -56,7 +56,7 @@ class Frontend {
   getTarget() {
     let target = null;
 
-    $.each(this.urlPatterns, (key, pattern) => {
+    this.urlPatterns.forEach((pattern, key) => {
       if (window.location.href.match(pattern)) {
         target = key;
       }
@@ -75,13 +75,15 @@ class Frontend {
       return;
     }
 
-    if (this.lgtmButton != null) {
-      this.lgtmButton.destroy();
+    if (this.lgtmButtons.has(target)) {
+      this.lgtmButtons.get(target).destroy();
+      this.lgtmButtons.delete(target);
     }
 
+    let lgtmButton = null;
     switch (target) {
       case "partial-pull-merging":
-        this.lgtmButton = new LgtmButton(this.app, {
+        lgtmButton = new LgtmButton(this.app, {
           target: "#" + target,
           methodType: this.app.templater.METHOD_TYPE_AFTER,
           template: "lgtmButton",
@@ -90,7 +92,7 @@ class Frontend {
         break;
 
       case "submit-review":
-        this.lgtmButton = new LgtmButton(this.app, {
+        lgtmButton = new LgtmButton(this.app, {
           target: "#" + target + " .write-content",
           methodType: this.app.templater.METHOD_TYPE_AFTER,
           template: "lgtmButtonSubmit",
@@ -99,6 +101,7 @@ class Frontend {
         break;
     }
 
-    this.lgtmButton.create();
+    lgtmButton.create();
+    this.lgtmButtons.set(target, lgtmButton);
   }
 }
