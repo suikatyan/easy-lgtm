@@ -5,6 +5,11 @@
   min-height: 45px;
 }
 
+#lgtm_wrapper_submit {
+  margin: 15px 8px;
+  min-height: 45px;
+}
+
 .lgtm_icon_wrapper {
   float: left;
   width: 44px;
@@ -52,6 +57,15 @@
   margin-left: 2px;
   border-width: 7px;
   border-right-color: #fff;
+}
+
+#lgtm_box_submit {
+  border: 1px solid #7ae2a8;
+  min-height: 45px;
+  border-radius: 3px;
+  padding: 15px;
+  position: relative;
+  text-align: center;
 }
 
 #lgtm_button {

@@ -58,6 +58,9 @@ class Templater {
           case this.METHOD_TYPE_PREPEND:
             $dom = $(content).prependTo(target);
             break;
+          case this.METHOD_TYPE_AFTER:
+            $dom = $(content).insertAfter(target);
+            break;
         }
 
         let id = this.PREFIX_DOM_ID_NAME + this.app.utilities.unique();

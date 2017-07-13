@@ -4,11 +4,13 @@ class LgtmButton {
    *
    * @constructor
    * @param {array} app
+   * @param {array} options
    */
-  constructor(app) {
+  constructor(app, options) {
     this.REQUEST_IMAGES_COUNT = 2;
 
     this.app = app;
+    this.options = options;
     this.isLoading = false;
   }
 
@@ -16,25 +18,25 @@ class LgtmButton {
    * ボタンを作成して、配置する。
    */
   create() {
-    let target = "#partial-pull-merging";
-    if ($(target).length === 0) {
+    if ($(this.options.target).length === 0) {
       return;
     }
 
-    this.destroy();
-    this.app.templater.render(
-      "lgtmButton",
-      target,
-      this.app.templater.METHOD_TYPE_AFTER,
+    this.app.templater.insert(
+      this.options.template,
+      this.options.target,
+      this.options.methodType,
       this.getVueData_()
-    );
+    ).then(vue => {
+      this.vue = vue;
+    });
   }
 
   /**
    * ボタンを削除する。
    */
   destroy() {
-    $("#lgtm_wrapper").remove();
+    $(`#${this.vue.$el.id}`).remove();
   }
 
   /**
@@ -44,7 +46,6 @@ class LgtmButton {
    */
   getVueData_() {
     return {
-      el: "#lgtm_wrapper",
       data: {
         src: this.getIconUrl_()
       },
@@ -56,17 +57,17 @@ class LgtmButton {
           this.isLoading = true;
           this.requestImages_().then((images) => {
             for (let image of images) {
-              let lgtmImage = new LgtmImage(this.app, image);
+              let lgtmImage = new LgtmImage(this.app, image, this.options.inputTarget);
               lgtmImage.create();
             }
             this.isLoading = false;
           });
         },
-        onMouseenter: () => {
-          $(".lgtm_not_initial").animate({"opacity": 0.1}, 100);
+        onMouseenter: (event) => {
+          $(event.target).find(".lgtm_not_initial").animate({"opacity": 0.1}, 100);
         },
-        onMouseleave: () => {
-          $(".lgtm_not_initial").animate({"opacity": 1}, 100);
+        onMouseleave: (event) => {
+          $(event.target).find(".lgtm_not_initial").animate({"opacity": 1}, 100);
         }
       }
     }

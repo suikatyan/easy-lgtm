@@ -5,11 +5,12 @@ class LgtmImage {
    * @constructor
    * @param {array}  app
    * @param {object} data - 画像に関するデータ
+   * @param {string} inputTarget - 画像を挿入する対象
    */
-  constructor(app, data) {
+  constructor(app, data, inputTarget) {
     this.app = app;
-
     this.data = data;
+    this.inputTarget = inputTarget;
     this.vue = null;
   }
 
@@ -67,6 +68,7 @@ class LgtmImage {
    */
   input_() {
     let text = `\n\n![LGTM](${this.data.imageUrl})`;
-    $("#new_comment_field").val($('#new_comment_field').val() + text);
+    let $target = $(this.inputTarget);
+    $target.val($target.val() + text);
   }
 }
