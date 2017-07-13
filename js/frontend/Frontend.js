@@ -13,7 +13,7 @@ class Frontend {
 
     this.urlPatterns = new Map([
       ["partial-pull-merging", /pull\/\d+(?:$|#)/],
-      ["submit-review", /pull\/\d+\/(commits|files)/],
+      ["submit-review", /pull\/\d+\/(?:commits|files)/],
     ]);
   }
 
@@ -40,7 +40,7 @@ class Frontend {
     this.observer = new MutationObserver((changedNodes) => {
       let target = this.getTarget();
 
-      if (target != null && $("#" + target).length > 0) {
+      if (target != null) {
         this.createLgtmButton(target);
       }
     });
@@ -71,7 +71,7 @@ class Frontend {
    * @param  {string|null} target
    */
   createLgtmButton(target) {
-    if (target == null) {
+    if (target == null || $("#" + target).length == 0) {
       return;
     }
 
@@ -80,28 +80,28 @@ class Frontend {
       this.lgtmButtons.delete(target);
     }
 
-    let lgtmButton = null;
+    let options = null;
     switch (target) {
       case "partial-pull-merging":
-        lgtmButton = new LgtmButton(this.app, {
+        options = {
           target: "#" + target,
           methodType: this.app.templater.METHOD_TYPE_AFTER,
           template: "lgtmButton",
           inputTarget: "#new_comment_field",
-        });
+        };
         break;
 
       case "submit-review":
-        lgtmButton = new LgtmButton(this.app, {
+        options = {
           target: "#" + target + " .write-content",
           methodType: this.app.templater.METHOD_TYPE_AFTER,
           template: "lgtmButtonSubmit",
           inputTarget: "#pull_request_review_body",
-        });
+        };
         break;
     }
 
-    lgtmButton.create();
-    this.lgtmButtons.set(target, lgtmButton);
+    this.lgtmButtons.set(target, new LgtmButton(this.app, options));
+    this.lgtmButtons.get(target).create();
   }
 }
