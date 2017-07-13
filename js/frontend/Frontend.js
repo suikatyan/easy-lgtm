@@ -13,7 +13,7 @@ class Frontend {
 
     this.urlPatterns = new Map([
       ["partial-pull-merging", /pull\/\d+(?:$|#)/],
-      ["submit-review", /pull\/\d+\/files(?:$|#)/],
+      ["submit-review", /pull\/\d+\/(commits|files)/],
     ]);
   }
 
@@ -40,7 +40,7 @@ class Frontend {
     this.observer = new MutationObserver((changedNodes) => {
       let target = this.getTarget();
 
-      if (target != null && $("#" + target).length) {
+      if (target != null && $("#" + target).length > 0) {
         this.createLgtmButton(target);
       }
     });
