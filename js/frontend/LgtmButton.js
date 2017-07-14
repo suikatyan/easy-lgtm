@@ -73,7 +73,7 @@ class LgtmButton {
         onClickCloseButton: (event) => {
           // 消したいがためにインスタンスを作成します。ごめんなさい
           (new LgtmImage()).clearBrothers();
-          $(event.target).hide(80);
+          $(event.target).hide(120);
         },
       }
     }
