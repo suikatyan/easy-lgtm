@@ -7,8 +7,6 @@ class LgtmButton {
    * @param {array} options
    */
   constructor(app, options) {
-    this.REQUEST_IMAGES_COUNT = 2;
-
     this.app = app;
     this.options = options;
     this.isLoading = false;
@@ -89,7 +87,7 @@ class LgtmButton {
     return new Promise(resolve => {
       chrome.runtime.sendMessage({
         action: "requestImages",
-        query : {number: this.REQUEST_IMAGES_COUNT}
+        query : {number: this.options.requestImageCount},
       }, (response) => {
         resolve(response);
       });

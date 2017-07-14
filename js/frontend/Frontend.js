@@ -88,6 +88,7 @@ class Frontend {
           methodType: this.app.templater.METHOD_TYPE_AFTER,
           template: "lgtmButton",
           inputTarget: "#new_comment_field",
+          requestImageCount: 2,
         };
         break;
 
@@ -97,6 +98,7 @@ class Frontend {
           methodType: this.app.templater.METHOD_TYPE_AFTER,
           template: "lgtmButtonSubmit",
           inputTarget: "#pull_request_review_body",
+          requestImageCount: 1,
         };
         break;
     }
