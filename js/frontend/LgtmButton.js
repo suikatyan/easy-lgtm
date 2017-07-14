@@ -62,6 +62,7 @@ class LgtmButton {
               lgtmImage.create();
             }
             this.isLoading = false;
+            $(".lgtm_images_wrapper").scrollTop(0);
           });
         },
         onMouseenter: (event) => {
