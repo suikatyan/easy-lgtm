@@ -43,6 +43,7 @@ class LgtmImage {
         onClick: () => {
           this.input_();
           this.clearBrothers();
+          $("#lgtm_button_close").hide(120);
         },
         onMouseenter: () => {
           $(this.vue.$el).animate({"borderColor": "#7ae2a8"}, 100);

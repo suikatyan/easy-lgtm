@@ -31,6 +31,7 @@
   padding: 15px;
   position: relative;
   text-align: center;
+  margin-top: 10px;
 }
 
 #lgtm_box:after, #lgtm_box:before {
@@ -66,6 +67,7 @@
   padding: 15px;
   position: relative;
   text-align: center;
+  margin-top: 10px;
 }
 
 #lgtm_button {
