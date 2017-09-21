@@ -44,6 +44,7 @@ class LgtmImage {
           this.input_();
           this.clearBrothers();
           $("#lgtm_button_close").hide(120);
+          $("input[value='approve']").click();
         },
         onMouseenter: () => {
           $(this.vue.$el).animate({"borderColor": "#7ae2a8"}, 100);
