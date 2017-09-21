@@ -21,31 +21,15 @@ class Frontend {
    * 初期処理。
    */
   initialize() {
-    this.startObservation();
+    let self = this;
 
-    this.createLgtmButton_(this.getTarget_());
-  }
-
-  /**
-   * MutationObserverを実行する。
-   * すでに実行済みなら、スキップする。
-   * Githubはページ遷移の仕組みが特殊であるため、エクステンションのrun_atでは不十分。
-   * ページの上部にあるプログレスバーに変化があれば実行するようにする。
-   */
-  startObservation() {
-    if (this.observer !== null) {
-      return;
-    }
-
-    this.observer = new MutationObserver((changedNodes) => {
-      let target = this.getTarget_();
-
-      if (target != null) {
-        this.createLgtmButton_(target);
-      }
+    // GitHub のページ遷移は pjax を使うため、完了時イベントを狙ってボタン生成を行う
+    $(document).on('pjax:end', function () {
+      self.createLgtmButton_(self.getTarget_());
     });
 
-    this.observer.observe($("#js-pjax-loader-bar")[0], {attributes: true});
+    // 画面初期表示時はボタン生成しておく
+    self.createLgtmButton_(self.getTarget_());
   }
 
   /**
