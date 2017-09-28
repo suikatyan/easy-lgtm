@@ -25,7 +25,7 @@
 }
 
 #lgtm_box {
-  border: 1px solid #7ae2a8;
+  border: 1px solid #34d058;
   min-height: 45px;
   border-radius: 3px;
   padding: 15px;
@@ -50,7 +50,7 @@
 
 #lgtm_box:before {
   border-width: 8px;
-  border-right-color: #7ae2a8;
+  border-right-color: #34d058;
 }
 
 #lgtm_box:after {
@@ -61,7 +61,7 @@
 }
 
 #lgtm_box_submit {
-  border: 1px solid #7ae2a8;
+  border: 1px solid #34d058;
   min-height: 45px;
   border-radius: 3px;
   padding: 15px;
