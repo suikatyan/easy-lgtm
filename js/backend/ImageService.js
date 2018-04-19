@@ -36,7 +36,9 @@ class ImageService {
         } else {
           // 使えない画像データなら保存しない。
           this.app.storage.dropReservation();
-          this.preloadImages(1);
+          setTimeout(() => {
+            this.preloadImages(1);
+          }, 1000);
         }
       });
     }
