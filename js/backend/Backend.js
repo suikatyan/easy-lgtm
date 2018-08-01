@@ -13,8 +13,8 @@ class Backend {
    * 初期処理。
    */
   initialize() {
-    // this.app.imageService.preloadImages();
-    // this.startListening_();
+    this.app.imageService.preloadImages();
+    this.startListening_();
   }
 
   /**
