@@ -49,6 +49,7 @@ class LgtmButton {
       },
       methods: {
         onClick: () => {
+          $("#hint").show();
           $("#lgtm_button_close").show(80);
           if (this.isLoading) {
             return;
