@@ -8,11 +8,10 @@ class Frontend {
   constructor(app) {
     this.app = app;
 
-    this.observer = null;
     this.lgtmButtons = new Map();
 
     this.urlPatterns = new Map([
-      ["partial-pull-merging", /pull\/\d+(?:$|#)/],
+      ["partial-pull-merging", /pull\/\d+(?:$|#|\?)/],
       ["submit-review", /pull\/\d+\/(?:commits|files)/],
     ]);
   }
@@ -21,31 +20,7 @@ class Frontend {
    * 初期処理。
    */
   initialize() {
-    this.startObservation();
-
     this.createLgtmButton_(this.getTarget_());
-  }
-
-  /**
-   * MutationObserverを実行する。
-   * すでに実行済みなら、スキップする。
-   * Githubはページ遷移の仕組みが特殊であるため、エクステンションのrun_atでは不十分。
-   * ページの上部にあるプログレスバーに変化があれば実行するようにする。
-   */
-  startObservation() {
-    if (this.observer !== null) {
-      return;
-    }
-
-    this.observer = new MutationObserver((changedNodes) => {
-      let target = this.getTarget_();
-
-      if (target != null) {
-        this.createLgtmButton_(target);
-      }
-    });
-
-    this.observer.observe($("#js-pjax-loader-bar")[0], {attributes: true});
   }
 
   /**
