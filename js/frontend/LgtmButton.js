@@ -62,6 +62,7 @@ class LgtmButton {
             }
             this.isLoading = false;
             $(".lgtm_images_wrapper").scrollTop(0);
+            $("#review-changes-modal .SelectMenu-modal").addClass("max-height-auto");
           });
         },
         onMouseenter: (event) => {

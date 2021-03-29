@@ -12,7 +12,7 @@ class Frontend {
 
     this.urlPatterns = new Map([
       ["partial-pull-merging", /pull\/\d+(?:$|#|\?)/],
-      ["submit-review", /pull\/\d+\/(?:commits|files)/],
+      ["review-changes-modal", /pull\/\d+\/(?:commits|files)/],
     ]);
   }
 
@@ -67,9 +67,9 @@ class Frontend {
         };
         break;
 
-      case "submit-review":
+      case "review-changes-modal":
         options = {
-          target: "#" + target + " .write-content",
+          target: "#" + target + " .js-previewable-comment-form",
           methodType: this.app.templater.METHOD_TYPE_AFTER,
           template: "lgtmButtonSubmit",
           inputTarget: "#pull_request_review_body",
