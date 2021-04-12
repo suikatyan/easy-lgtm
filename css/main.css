@@ -77,35 +77,42 @@
 }
 
 #lgtm_button {
-  background-color: white;
+  background-color: var(--color-bg-primary);
   border: none;
   font-size: 20px;
   height: 45px;
   width: 100%;
+  color: var(--color-text-primary);
 }
 
 #lgtm_button_close {
   background-color: tomato;
   border: none;
-  box-shadow: white 0px 0px 0px 12px inset;
-  color: white;
+  box-shadow: var(--color-bg-primary) 0px 0px 0px 12px inset;
+  color: var(--color-bg-primary);
   height: 25px;
   width: 100%;
   display: none;
   transition: box-shadow 0.1s linear;
+  border-radius: 3px;
 }
 
 #lgtm_button_close:hover {
-  box-shadow: white 0px 0px 0px 0px inset;
+  box-shadow: var(--color-bg-primary) 0px 0px 0px 0px inset;
 }
 
 .lgtm_image {
   width: 330px;
-  padding: 2px;
-  border: 3px solid white;
+  border: 3px solid var(--color-bg-primary);
   border-radius: 4px;
   margin-top: 5px;
   cursor: pointer;
+  transition: border-color 0.1s linear;
+  background-color: white;
+}
+
+.lgtm_image:hover {
+  border-color: #34d058;
 }
 
 #hint {

@@ -50,12 +50,6 @@ class LgtmImage {
           $("#lgtm_button_close").hide(120);
           $("input[value='approve']").click();
         },
-        onMouseenter: () => {
-          $(this.vue.$el).animate({"borderColor": "#34d058"}, 100);
-        },
-        onMouseleave: () => {
-          $(this.vue.$el).animate({"borderColor": "white"}, 100);
-        }
       }
     };
   }
