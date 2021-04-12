@@ -8,12 +8,11 @@ class Frontend {
   constructor(app) {
     this.app = app;
 
-    this.observer = null;
     this.lgtmButtons = new Map();
 
     this.urlPatterns = new Map([
-      ["partial-pull-merging", /pull\/\d+(?:$|#)/],
-      ["submit-review", /pull\/\d+\/(?:commits|files)/],
+      ["partial-pull-merging", /pull\/\d+(?:$|#|\?)/],
+      ["review-changes-modal", /pull\/\d+\/(?:commits|files)/],
     ]);
   }
 
@@ -21,15 +20,7 @@ class Frontend {
    * 初期処理。
    */
   initialize() {
-    let self = this;
-
-    // GitHub のページ遷移は pjax を使うため、完了時イベントを狙ってボタン生成を行う
-    $(document).on('pjax:end', function () {
-      self.createLgtmButton_(self.getTarget_());
-    });
-
-    // 画面初期表示時はボタン生成しておく
-    self.createLgtmButton_(self.getTarget_());
+    this.createLgtmButton_(this.getTarget_());
   }
 
   /**
@@ -76,9 +67,9 @@ class Frontend {
         };
         break;
 
-      case "submit-review":
+      case "review-changes-modal":
         options = {
-          target: "#" + target + " .write-content",
+          target: "#" + target + " .js-previewable-comment-form",
           methodType: this.app.templater.METHOD_TYPE_AFTER,
           template: "lgtmButtonSubmit",
           inputTarget: "#pull_request_review_body",

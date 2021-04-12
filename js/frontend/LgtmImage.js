@@ -40,8 +40,12 @@ class LgtmImage {
         src: this.data.image
       },
       methods: {
-        onClick: () => {
-          this.input_();
+        onClick: event => {
+          if (event.shiftKey) {
+            this.input_("img");
+          } else {
+            this.input_("markdown");
+          }
           this.clearBrothers();
           $("#lgtm_button_close").hide(120);
           $("input[value='approve']").click();
@@ -61,15 +65,25 @@ class LgtmImage {
    */
   clearBrothers() {
     $(".lgtm_image").slideUp(500, () => {
-      $(".lgtm_image").remove();
+      $(this).remove();
     });
+    $("#hint").hide();
   }
 
   /**
    * 画像がクリックされたとき、テキストエリアに画像URL（マークダウン形式）を挿入する。
    */
-  input_() {
-    let text = `\n\n![LGTM](${this.data.imageUrl})`;
+  input_(mode) {
+    let text;
+    switch (mode) {
+      case "img":
+        text = `\n\n<img src="${this.data.imageUrl}" alt="LGTM" width="320">`;
+        break;
+      case "markdown":
+      default:
+        text = `\n\n![LGTM](${this.data.imageUrl})`;
+        break;
+    }
     let $target = $(this.inputTarget);
     $target.val($target.val() + text);
   }
