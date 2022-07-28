@@ -4,7 +4,7 @@ $(() => {
   app.templater  = new Templater(app);
   app.frontend   = new Frontend(app);
 
-  $(document).on("pjax:success", function () {
+  $(document).on("turbo:visit", function () {
     app.frontend.initialize();
   });
 
