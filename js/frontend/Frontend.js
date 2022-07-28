@@ -20,7 +20,7 @@ class Frontend {
    * 初期処理。
    */
   initialize() {
-    this.createLgtmButton_(this.getTarget_());
+    setTimeout(() => this.createLgtmButton_(this.getTarget_()), 3000);
   }
 
   /**
