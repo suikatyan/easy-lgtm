@@ -22,19 +22,16 @@ class LgtmImage {
    * @return {Promise}
    */
   load() {
-    return new Promise(resolve => {
-      $.ajax({
-        type: "POST",
-        url: this.API_URL,
-        dataType: "json",
-        success: ({image, error, imageUrl, lgtmUrl}) => {
-          Object.assign(this, {image, error, imageUrl, lgtmUrl});
-        },
-        complete: () => {
-          resolve();
-        }
+    return fetch(this.API_URL, {
+      method: "POST"
+    })
+      .then(res => res.json())
+      .then(({image, error, imageUrl, lgtmUrl}) => {
+        Object.assign(this, {image, error, imageUrl, lgtmUrl});
       })
-    });
+      .catch(() => {
+        this.error = true;
+      });
   }
 
   /**

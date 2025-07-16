@@ -15,59 +15,63 @@ class Templater {
     this.app = app;
   }
 
+
   /**
-   * elを指定して、Vue形式で配置する。
+   * テンプレートを指定位置に挿入する（jQueryのみ）。
    *
    * @param  {string} name       - テンプレート名
    * @param  {string} [target]     - 対象のクエリ
    * @param  {string} [methodType] - 挿入の方法
-   * @param  {object} [data]       - Vueデータ
-   * @return {Promise}
+   * @return {Promise<jQuery>} 挿入したjQueryオブジェクトを返す
    */
-  render(name, target = "body", methodType = this.METHOD_TYPE_APPEND, data = {}) {
-    this.readFile_(name).then(content => {
+  render(name, target = "body", methodType = this.METHOD_TYPE_APPEND) {
+    return this.readFile_(name).then(content => {
+      let $dom;
       switch (methodType) {
         case this.METHOD_TYPE_APPEND:
-          $(content).appendTo(target);
+          $dom = $(content).appendTo(target);
           break;
         case this.METHOD_TYPE_AFTER:
-          $(content).insertAfter(target);
+          $dom = $(content).insertAfter(target);
           break;
+        case this.METHOD_TYPE_PREPEND:
+          $dom = $(content).prependTo(target);
+          break;
+        default:
+          $dom = $(content).appendTo(target);
       }
-      new Vue(data);
+      return $dom;
     });
   }
 
+
   /**
-   * elを指定せず、動的にIDを設定し、Vue形式で配置する。
+   * テンプレートを指定位置に挿入し、jQueryオブジェクトを返す（ID付与）。
    *
    * @param  {string} name         - テンプレート名
    * @param  {string} [target]     - 対象のクエリ
    * @param  {string} [methodType] - 挿入の方法
-   * @param  {object} [data]       - Vueデータ
-   * @return {Promise}
+   * @return {Promise<jQuery>} 挿入したjQueryオブジェクトを返す
    */
-  insert(name, target = "body", methodType = this.METHOD_TYPE_APPEND, data = {}) {
-    return new Promise(resolve => {
-      this.readFile_(name).then(content => {
-        let $dom;
-        switch (methodType) {
-          case this.METHOD_TYPE_APPEND:
-            $dom = $(content).appendTo(target);
-            break;
-          case this.METHOD_TYPE_PREPEND:
-            $dom = $(content).prependTo(target);
-            break;
-          case this.METHOD_TYPE_AFTER:
-            $dom = $(content).insertAfter(target);
-            break;
-        }
-
-        let id = this.PREFIX_DOM_ID_NAME + this.app.utilities.unique();
-        $dom.prop("id", id);
-        data.el = `#${id}`;
-        resolve(new Vue(data));
-      });
+  insert(name, target = "body", methodType = this.METHOD_TYPE_APPEND) {
+    return this.readFile_(name).then(content => {
+      let $dom;
+      switch (methodType) {
+        case this.METHOD_TYPE_APPEND:
+          $dom = $(content).appendTo(target);
+          break;
+        case this.METHOD_TYPE_PREPEND:
+          $dom = $(content).prependTo(target);
+          break;
+        case this.METHOD_TYPE_AFTER:
+          $dom = $(content).insertAfter(target);
+          break;
+        default:
+          $dom = $(content).appendTo(target);
+      }
+      let id = this.PREFIX_DOM_ID_NAME + this.app.utilities.unique();
+      $dom.prop("id", id);
+      return $dom;
     });
   }
 
@@ -96,6 +100,6 @@ class Templater {
    * @return {string}
    */
   getPath_(name) {
-    return chrome.extension.getURL(`templates/${name}.html`);
+    return chrome.runtime.getURL(`templates/${name}.html`);
   }
 }

@@ -20,13 +20,29 @@ class LgtmButton {
       return;
     }
 
-    this.app.templater.insert(
-      this.options.template,
-      this.options.target,
-      this.options.methodType,
-      this.getVueData_()
-    ).then(vue => {
-      this.vue = vue;
+    // テンプレートHTMLを取得して挿入
+    this.app.templater.readFile_(this.options.template).then((content) => {
+      let $dom;
+      switch (this.options.methodType) {
+        case this.app.templater.METHOD_TYPE_APPEND:
+          $dom = $(content).appendTo(this.options.target);
+          break;
+        case this.app.templater.METHOD_TYPE_PREPEND:
+          $dom = $(content).prependTo(this.options.target);
+          break;
+        case this.app.templater.METHOD_TYPE_AFTER:
+          $dom = $(content).insertAfter(this.options.target);
+          break;
+      }
+
+      // アイコン画像をセット
+      $dom.find('.lgtm_icon').attr('src', this.getIconUrl_());
+
+      // イベントバインド
+      $dom.find('#lgtm_button').on('click', (e) => this.onClick(e));
+      $dom.find('#lgtm_button').on('mouseenter', (e) => this.onMouseenter(e));
+      $dom.find('#lgtm_button').on('mouseleave', (e) => this.onMouseleave(e));
+      $dom.find('#lgtm_button_close').on('click', (e) => this.onClickCloseButton(e));
     });
   }
 
@@ -38,46 +54,47 @@ class LgtmButton {
   }
 
   /**
-   * ボタン用のVueデータを取得する。
-   *
-   * @return {object}
+   * LGTMボタンクリック時の処理
    */
-  getVueData_() {
-    return {
-      data: {
-        src: this.getIconUrl_()
-      },
-      methods: {
-        onClick: () => {
-          $("#hint").show();
-          $("#lgtm_button_close").show(80);
-          if (this.isLoading) {
-            return;
-          }
-          this.isLoading = true;
-          this.requestImages_().then((images) => {
-            for (let image of images) {
-              let lgtmImage = new LgtmImage(this.app, image, this.options.inputTarget);
-              lgtmImage.create();
-            }
-            this.isLoading = false;
-            $(".lgtm_images_wrapper").scrollTop(0);
-            $("#review-changes-modal .SelectMenu-modal").addClass("max-height-auto");
-          });
-        },
-        onMouseenter: (event) => {
-          $(event.target).find(".lgtm_not_initial").animate({"opacity": 0.1}, 100);
-        },
-        onMouseleave: (event) => {
-          $(event.target).find(".lgtm_not_initial").animate({"opacity": 1}, 100);
-        },
-        onClickCloseButton: (event) => {
-          // 消したいがためにインスタンスを作成します。ごめんなさい
-          (new LgtmImage()).clearBrothers();
-          $(event.target).hide(120);
-        },
-      }
+  onClick(event) {
+    $("#hint").show();
+    $("#lgtm_button_close").show(80);
+    if (this.isLoading) {
+      return;
     }
+    this.isLoading = true;
+    this.requestImages_().then((images) => {
+      for (let image of images) {
+        let lgtmImage = new LgtmImage(this.app, image, this.options.inputTarget);
+        lgtmImage.create();
+      }
+      this.isLoading = false;
+      $(".lgtm_images_wrapper").scrollTop(0);
+      $("#review-changes-modal .SelectMenu-modal").addClass("max-height-auto");
+    });
+  }
+
+  /**
+   * マウスエンター時の処理
+   */
+  onMouseenter(event) {
+    $(event.target).find(".lgtm_not_initial").animate({"opacity": 0.1}, 100);
+  }
+
+  /**
+   * マウスリーブ時の処理
+   */
+  onMouseleave(event) {
+    $(event.target).find(".lgtm_not_initial").animate({"opacity": 1}, 100);
+  }
+
+  /**
+   * 閉じるボタンクリック時の処理
+   */
+  onClickCloseButton(event) {
+    // 消したいがためにインスタンスを作成します。ごめんなさい
+    (new LgtmImage()).clearBrothers();
+    $(event.target).hide(120);
   }
 
   /**
