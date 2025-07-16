@@ -21,7 +21,7 @@ class Backend {
    * ChromeのAPIを用いて、Frontend側の要求を受け付ける準備をする。
    */
   startListening_() {
-    chrome.extension.onMessage.addListener((request, sender, respond) => {
+    chrome.runtime.onMessage.addListener((request, sender, respond) => {
       let {action, query} = request;
       switch (action) {
         case 'requestImages':

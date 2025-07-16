@@ -62,7 +62,7 @@ class Frontend {
           target: "#" + target,
           methodType: this.app.templater.METHOD_TYPE_AFTER,
           template: "lgtmButton",
-          inputTarget: "#new_comment_field",
+          inputTarget: "#discussion-timeline-actions",
           requestImageCount: 2,
         };
         break;

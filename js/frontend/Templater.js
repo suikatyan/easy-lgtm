@@ -96,6 +96,6 @@ class Templater {
    * @return {string}
    */
   getPath_(name) {
-    return chrome.extension.getURL(`templates/${name}.html`);
+    return chrome.runtime.getURL(`templates/${name}.html`);
   }
 }
