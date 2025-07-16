@@ -25,7 +25,6 @@
       "js": [
         "js/lib/jquery.js",
         "js/lib/jquery.color.js",
-        "js/lib/vue.js",
         "js/common/Utilities.js",
         "js/frontend/Templater.js",
         "js/frontend/LgtmImage.js",

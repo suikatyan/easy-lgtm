@@ -11,7 +11,7 @@ class LgtmImage {
     this.app = app;
     this.data = data;
     this.inputTarget = inputTarget;
-    this.vue = null;
+    this.$dom = null;
   }
 
   /**
@@ -21,44 +21,45 @@ class LgtmImage {
     this.app.templater.insert(
       "lgtmImage",
       ".lgtm_images_wrapper",
-      this.app.templater.METHOD_TYPE_PREPEND,
-      this.getVueData_()
-    ).then(vue => {
-      this.vue = vue;
-      $(this.vue.$el).slideDown(500);
+      this.app.templater.METHOD_TYPE_PREPEND
+    ).then($dom => {
+      this.$dom = $dom;
+      // src属性をセット
+      $dom.attr("src", this.data.image);
+      // jQueryでイベントバインド
+      $dom.on("mouseenter", (e) => this.onMouseenter(e));
+      $dom.on("mouseleave", (e) => this.onMouseleave(e));
+      $dom.on("click", (e) => this.onClick(e));
+      $dom.slideDown(200);
     });
   }
 
-  /**
-   * 画像用のVueデータを取得する。
-   *
-   * @return {object}
-   */
-  getVueData_() {
-    return {
-      data: {
-        src: this.data.image
-      },
-      methods: {
-        onClick: event => {
-          if (event.shiftKey) {
-            this.input_("img");
-          } else {
-            this.input_("markdown");
-          }
-          this.clearBrothers();
-          $("#lgtm_button_close").hide(120);
-          $("input[value='approve']").click();
-        },
-      }
-    };
+
+  // Vue依存除去: イベントハンドラをjQueryで直接バインド
+  onClick(event) {
+    if (event.shiftKey) {
+      this.input_("img");
+    } else {
+      this.input_("markdown");
+    }
+    this.clearBrothers();
+    $("#lgtm_button_close").hide(120);
+    $("input[value='approve']").click();
+  }
+
+  onMouseenter(event) {
+    $(event.target).css("opacity", 0.7);
+  }
+
+  onMouseleave(event) {
+    $(event.target).css("opacity", 1);
   }
 
   /**
    * 自分と他のLGTM画像を全部削除する。
    */
   clearBrothers() {
-    $(".lgtm_image").slideUp(500, () => {
+    $(".lgtm_image").slideUp(500, function() {
       $(this).remove();
     });
     $("#hint").hide();

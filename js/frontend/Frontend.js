@@ -11,7 +11,7 @@ class Frontend {
     this.lgtmButtons = new Map();
 
     this.urlPatterns = new Map([
-      ["partial-pull-merging", /pull\/\d+(?:$|#|\?)/],
+      ["issue-comment-box", /pull\/\d+(?:$|#|\?)/],
       ["review-changes-modal", /pull\/\d+\/(?:commits|files)/],
     ]);
   }
@@ -57,13 +57,13 @@ class Frontend {
 
     let options = null;
     switch (target) {
-      case "partial-pull-merging":
+      case "issue-comment-box":
         options = {
           target: "#" + target,
-          methodType: this.app.templater.METHOD_TYPE_AFTER,
+          methodType: this.app.templater.METHOD_TYPE_PREPEND,
           template: "lgtmButton",
-          inputTarget: "#discussion-timeline-actions",
-          requestImageCount: 2,
+          inputTarget: "#new_comment_field",
+          requestImageCount: 1,
         };
         break;
 
