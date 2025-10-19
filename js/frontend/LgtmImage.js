@@ -79,7 +79,14 @@ class LgtmImage {
         text = `\n\n![LGTM](${this.data.imageUrl})`;
         break;
     }
-    let $target = $(this.inputTarget);
-    $target.val($target.val() + text);
+    let targetElement = document.querySelector(this.inputTarget);
+
+    if (targetElement) {
+        const nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, 'value').set;
+        nativeInputValueSetter.call(targetElement, targetElement.value + text);
+
+        const event = new Event('input', { bubbles: true });
+        targetElement.dispatchEvent(event);
+    }
   }
 }
